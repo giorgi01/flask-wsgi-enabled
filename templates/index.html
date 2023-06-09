@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f2f2f2;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .student-info {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .student-name {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .gpa {
+            font-size: 18px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    {% for student in students %}
+    <div class="student-info">
+        <h1>student №{{student.id}}</h1>
+        <div class="student-name">{{student.name}}</div>
+        <div class="gpa">GPA: {{student.gpa}}</div>
+    </div>
+    {% endfor %}
+</body>
+</html>
