@@ -35,7 +35,7 @@ class Student(db.Model):
 @app.route('/api/students')
 def get_students():
     students = [student.to_dict() for student in Student.query.all()]
-    return students, 200
+    return {'students': students, 'status_code': 200}
 
 
 # create_students მეთოდი გამოიძახება მხოლოდ იმ შემთხვევაში თუ:
