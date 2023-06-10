@@ -32,10 +32,21 @@ class Student(db.Model):
 # get_students მეთოდი გამოიძახება მხოლოდ იმ შემთხვევაში თუ:
 # მომხმარებელი გადავა აპლიკაციის / ან /students მისამართზე
 # მეთოდს ბაზიდან მოაქვს ყველა სტუდენტის ობიექტი გადაქასთავს ლექსიკონებად და უბრუნებს მომხმარებელს, HTTP 200 კოდთან ერთად
+# თუ url არის /api/students?name=Someone, მეთოდი წამოიღებს მხოლოდ სტუდენტებს დასახელებით Someone
 @app.route('/api/students')
 def get_students():
-    students = [student.to_dict() for student in Student.query.all()]
+    student_name = request.args.get('name')
+    if student_name:
+        students = [student.to_dict() for student in Student.query.filter(Student.name == student_name)]
+    else:
+        students = [student.to_dict() for student in Student.query.all()]
     return {'students': students, 'status_code': 200}
+
+
+@app.route('/api/students/<int:id>')
+def get_student(id):
+    student = Student.query.get(id)
+    return {'student': student, 'status_code': 200}
 
 
 # create_students მეთოდი გამოიძახება მხოლოდ იმ შემთხვევაში თუ:
