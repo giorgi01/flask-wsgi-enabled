@@ -1,9 +1,12 @@
 # საჭირო ბიბლიოთეკების იმპორტი
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+
+from form import MyForm
 
 # flask აპლიკაციის შექმნა, რომელსაც ერქმევა ფაილის იდენტური სახელი
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'your-secret-key'
 
 # შექმნილი აპლიკაციისთვის ბაზის მისამართის გაწერა, აქვე ბაზას ვარქმევთ სახელს
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///students.db'
@@ -93,9 +96,27 @@ def delete_student(id):
 
 
 @app.route('/')
-def index_page():
+def index():
     students = [student.to_dict() for student in Student.query.all()]
     return render_template('index.html', students=students)
+
+
+@app.route('/create', methods=['GET', 'POST'])
+def create():
+    form = MyForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        gpa = form.gpa.data
+        student = Student(name=name, gpa=gpa)
+        db.session.add(student)
+        db.session.commit()
+        return redirect(url_for('success'))
+    return render_template('create.html', form=form)
+
+
+@app.route('/success')
+def success():
+    return 'Form submitted successfully!'
 
 
 # ქვემოთ ვქმნით აპლიკაციის კონტექსტს
