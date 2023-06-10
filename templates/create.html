@@ -10,16 +10,10 @@
         <p>
             {{ form.name.label }}<br>
             {{ form.name(size=20) }}<br>
-            {% for error in form.name.errors %}
-                <span style="color: red;">{{ error }}</span><br>
-            {% endfor %}
         </p>
         <p>
             {{ form.gpa.label }}<br>
             {{ form.gpa() }}<br>
-            {% for error in form.gpa.errors %}
-                <span style="color: red;">{{ error }}</span><br>
-            {% endfor %}
         </p>
         <p>
             {{ form.submit() }}

@@ -39,7 +39,12 @@ class Student(db.Model):
 @app.route('/api/students')
 def get_students():
     student_name = request.args.get('name')
-    if student_name:
+    student_gpa = request.args.get('gpa')
+    if student_name and student_gpa:
+        students = [student.to_dict() for student in Student.query.filter(Student.name == student_name).filter(Student.gpa == student_gpa)]
+    elif student_gpa:
+        students = [student.to_dict() for student in Student.query.filter(Student.gpa == student_gpa)]
+    elif student_name:
         students = [student.to_dict() for student in Student.query.filter(Student.name == student_name)]
     else:
         students = [student.to_dict() for student in Student.query.all()]
@@ -126,4 +131,3 @@ def success():
 
 with app.app_context():
     db.create_all()
-    app.run()
